@@ -158,29 +158,14 @@
     return String(value || "")
       .replaceAll("&", "&amp;")
       .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;");
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
   }
 
-  function summaryForBlock(type, props) {
-    const map = {
-      hero: props.headline,
-      cta_band: props.headline,
-      quote: props.text,
-      two_column: `ratio ${props.ratio || "50/50"}`,
-      three_column: `3-column${props.gap ? ` gap ${props.gap}` : ""}`,
-      card: props.title,
-      rich_text: (props.body || "").replace(/<[^>]*>/g, "").slice(0, 70),
-      donation_embed: props.embed_type,
-      alert_banner: props.message,
-      faq: `${(props.items || []).length} item(s)`,
-    };
-    return escapeHtml(map[type] || "");
-  }
-
-  function makeCanvasMarkup(type, props) {
+  function makeCanvasMarkup(type) {
     const title = escapeHtml((BLOCK_DEFS[type] || {}).label || type);
-    const summary = summaryForBlock(type, props);
-    return `<div class="ms-builder-block" data-ms-type="${escapeHtml(type)}"><strong>${title}</strong><p>${summary}</p></div>`;
+    return `<div class="ms-builder-block" data-ms-type="${escapeHtml(type)}"><strong>${title}</strong><p>Configured block</p></div>`;
   }
 
   function componentForBlock(block) {
@@ -196,7 +181,7 @@
       droppable: false,
       selectable: true,
       stylable: false,
-      components: makeCanvasMarkup(type, props),
+      components: makeCanvasMarkup(type),
     };
   }
 
@@ -293,7 +278,7 @@
         ...component.getAttributes(),
         "data-ms-props": JSON.stringify(nextProps),
       });
-      component.components(makeCanvasMarkup(block.type, nextProps));
+      component.components(makeCanvasMarkup(block.type));
       syncTextarea(widgetEl, editor);
     });
 
