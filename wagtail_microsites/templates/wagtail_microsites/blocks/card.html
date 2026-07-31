@@ -1,0 +1,46 @@
+{% load wagtail_microsites_tags %}
+{# -----------------------------------------------------------------------
+   Card block — a self-contained content card.
+
+   Props:
+     title     (required)
+     body      (optional plain text)
+     image_url (optional)
+     image_alt (optional)
+     cta_text  (optional)
+     cta_url   (optional)
+   ----------------------------------------------------------------------- #}
+
+<div class="ms-card">
+  {% if props.image_url %}
+    {% with safe_img=props.image_url|safe_url %}
+      {% if safe_img %}
+        <div class="ms-card__image-wrap">
+          <img
+            src="{{ safe_img }}"
+            alt="{{ props.image_alt|default:""|escape }}"
+            class="ms-card__image"
+            loading="lazy"
+          >
+        </div>
+      {% endif %}
+    {% endwith %}
+  {% endif %}
+  <div class="ms-card__body">
+    <h3 class="ms-card__title">{{ props.title|escape }}</h3>
+    {% if props.body %}
+      <p class="ms-card__text">{{ props.body|escape }}</p>
+    {% endif %}
+    {% if props.cta_text and props.cta_url %}
+      {% with safe_url=props.cta_url|safe_url %}
+        {% if safe_url %}
+          <p class="ms-card__cta">
+            <a class="ms-button ms-button--secondary" href="{{ safe_url }}">
+              {{ props.cta_text|escape }}
+            </a>
+          </p>
+        {% endif %}
+      {% endwith %}
+    {% endif %}
+  </div>
+</div>

@@ -1,0 +1,32 @@
+{% load wagtail_microsites_tags %}
+{# -----------------------------------------------------------------------
+   Quote block — styled pull-quote / blockquote.
+
+   Props:
+     text         (required)
+     attribution  (optional)
+     source_url   (optional)
+   ----------------------------------------------------------------------- #}
+
+<section class="ms-quote">
+  <div class="ms-container">
+    <blockquote class="ms-quote__blockquote">
+      <p class="ms-quote__text">{{ props.text|escape }}</p>
+      {% if props.attribution %}
+        <footer class="ms-quote__attribution">
+          {% if props.source_url %}
+            {% with safe_url=props.source_url|safe_url %}
+              {% if safe_url %}
+                <cite><a href="{{ safe_url }}" rel="noopener">{{ props.attribution|escape }}</a></cite>
+              {% else %}
+                <cite>{{ props.attribution|escape }}</cite>
+              {% endif %}
+            {% endwith %}
+          {% else %}
+            <cite>{{ props.attribution|escape }}</cite>
+          {% endif %}
+        </footer>
+      {% endif %}
+    </blockquote>
+  </div>
+</section>

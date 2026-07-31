@@ -1,0 +1,38 @@
+{% load wagtail_microsites_tags %}
+{# -----------------------------------------------------------------------
+   CTA Band — a high-contrast call-to-action strip.
+
+   Props:
+     headline          (required)
+     cta_text          (required)
+     cta_url           (required)
+     body              (optional)
+     background_color  (optional CSS colour)
+     text_color        (optional CSS colour)
+   ----------------------------------------------------------------------- #}
+
+{% with safe_url=props.cta_url|safe_url %}
+<section
+  class="ms-cta-band"
+  {% if props.background_color or props.text_color %}
+  style="
+    {% if props.background_color %}background-color: {{ props.background_color|escape }};{% endif %}
+    {% if props.text_color %}color: {{ props.text_color|escape }};{% endif %}
+  "
+  {% endif %}
+>
+  <div class="ms-container">
+    <h2 class="ms-cta-band__headline">{{ props.headline|escape }}</h2>
+    {% if props.body %}
+      <p class="ms-cta-band__body">{{ props.body|escape }}</p>
+    {% endif %}
+    {% if safe_url %}
+      <p class="ms-cta-band__action">
+        <a class="ms-button ms-button--primary" href="{{ safe_url }}">
+          {{ props.cta_text|escape }}
+        </a>
+      </p>
+    {% endif %}
+  </div>
+</section>
+{% endwith %}

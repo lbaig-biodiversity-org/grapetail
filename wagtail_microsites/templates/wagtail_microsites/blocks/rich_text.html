@@ -1,0 +1,17 @@
+{% load wagtail_microsites_tags %}
+{# -----------------------------------------------------------------------
+   Rich text block — sanitised HTML rendered as-is, with images sized to
+   the width of the text column.
+
+   Props:
+     body  (required) — sanitised HTML from the editor
+   ----------------------------------------------------------------------- #}
+
+<section class="ms-rich-text">
+  <div class="ms-container ms-rich-text__body">
+    {# sanitize_rich_text is applied by the template tag to strip any
+       unsafe tags/attributes before output. The |safe filter is safe here
+       because sanitize_rich_text strips scripts, event handlers, etc. #}
+    {{ props.body|sanitize_rich_text }}
+  </div>
+</section>

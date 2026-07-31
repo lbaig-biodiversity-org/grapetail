@@ -1,0 +1,45 @@
+{% load wagtail_microsites_tags %}
+{# -----------------------------------------------------------------------
+   FAQ block — accessible accordion-style FAQ list.
+
+   Props:
+     items     (required) list of {question, answer}
+     headline  (optional)
+   ----------------------------------------------------------------------- #}
+
+<section class="ms-faq">
+  <div class="ms-container">
+    {% if props.headline %}
+      <h2 class="ms-faq__headline">{{ props.headline|escape }}</h2>
+    {% endif %}
+    <dl class="ms-faq__list">
+      {% for item in props.items %}
+        <div class="ms-faq__item">
+          <dt class="ms-faq__question">
+            <button
+              class="ms-faq__toggle"
+              type="button"
+              aria-expanded="false"
+              aria-controls="faq-answer-{{ forloop.counter }}"
+              onclick="
+                var ans = document.getElementById('faq-answer-{{ forloop.counter }}');
+                var expanded = this.getAttribute('aria-expanded') === 'true';
+                this.setAttribute('aria-expanded', String(!expanded));
+                ans.hidden = expanded;
+              "
+            >
+              {{ item.question|escape }}
+            </button>
+          </dt>
+          <dd
+            class="ms-faq__answer"
+            id="faq-answer-{{ forloop.counter }}"
+            hidden
+          >
+            {{ item.answer|escape }}
+          </dd>
+        </div>
+      {% endfor %}
+    </dl>
+  </div>
+</section>

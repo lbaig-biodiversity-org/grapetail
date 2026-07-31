@@ -1,0 +1,42 @@
+{% load wagtail_microsites_tags %}
+{# -----------------------------------------------------------------------
+   Alert Banner block.
+
+   Props:
+     message     (required)
+     level       (optional) "info" | "warning" | "success" | "error"
+     dismissible (optional) boolean
+     cta_text    (optional)
+     cta_url     (optional)
+   ----------------------------------------------------------------------- #}
+
+{% with level=props.level|default:"info" %}
+<div
+  class="ms-alert-banner ms-alert-banner--{{ level|escape }}"
+  role="alert"
+  {% if props.dismissible %}data-dismissible="true"{% endif %}
+>
+  <div class="ms-container ms-alert-banner__inner">
+    <span class="ms-alert-banner__message">{{ props.message|escape }}</span>
+    {% if props.cta_text and props.cta_url %}
+      {% with safe_url=props.cta_url|safe_url %}
+        {% if safe_url %}
+          <a class="ms-alert-banner__cta" href="{{ safe_url }}">
+            {{ props.cta_text|escape }}
+          </a>
+        {% endif %}
+      {% endwith %}
+    {% endif %}
+    {% if props.dismissible %}
+      <button
+        class="ms-alert-banner__close"
+        type="button"
+        aria-label="Dismiss alert"
+        onclick="this.closest('.ms-alert-banner').remove()"
+      >
+        &times;
+      </button>
+    {% endif %}
+  </div>
+</div>
+{% endwith %}

@@ -1,0 +1,35 @@
+{% load wagtail_microsites_tags %}
+{# -----------------------------------------------------------------------
+   Two-column layout block.
+
+   Props:
+     ratio           (optional) e.g. "50/50", "40/60", "33/67"  default: 50/50
+     gap             (optional) CSS gap value                    default: 2rem
+     stack_on_mobile (optional) boolean                          default: true
+     left_blocks     (list of sub-blocks)
+     right_blocks    (list of sub-blocks)
+   ----------------------------------------------------------------------- #}
+
+{% with ratio=props.ratio|default:"50/50" %}
+{% with gap=props.gap|default:"2rem" %}
+{% with widths=ratio|column_widths %}
+<section class="ms-two-column{% if props.stack_on_mobile != False %} ms-two-column--stackable{% endif %}">
+  <div
+    class="ms-two-column__grid"
+    style="display: grid; grid-template-columns: {{ widths.0 }} {{ widths.1 }}; gap: {{ gap|escape }};"
+  >
+    <div class="ms-two-column__col ms-two-column__col--left">
+      {% for sub_block in props.left_blocks %}
+        {% render_block sub_block %}
+      {% endfor %}
+    </div>
+    <div class="ms-two-column__col ms-two-column__col--right">
+      {% for sub_block in props.right_blocks %}
+        {% render_block sub_block %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endwith %}
+{% endwith %}
+{% endwith %}
