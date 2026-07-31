@@ -1,0 +1,31 @@
+.microsite-builder-output {
+  color: #1f2630;
+  line-height: 1.5;
+}
+
+.ms-container {
+  width: min(100% - 2rem, 1100px);
+  margin-inline: auto;
+}
+
+.ms-button {
+  display: inline-block;
+  padding: 0.625rem 1rem;
+  border-radius: 0.375rem;
+  text-decoration: none;
+  background: #0f6fff;
+  color: #fff;
+}
+
+.ms-rich-text img,
+.ms-rich-text figure img {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 880px) {
+  .ms-two-column--stackable .ms-two-column__grid,
+  .ms-three-column--stackable .ms-three-column__grid {
+    grid-template-columns: 1fr !important;
+  }
+}

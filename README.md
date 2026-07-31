@@ -50,7 +50,7 @@ python manage.py runserver
    any parent.
 3. Fill in the title, optional theme, and optional expiry date.
 4. Use the visual builder panel (GrapesJS) to compose the page from approved
-   blocks, or edit the `builder_json` field directly for development.
+   blocks. An "Advanced: raw JSON" drawer is still available for debugging.
 5. Publish and visit the page URL.
 
 ---
@@ -83,6 +83,8 @@ wagtail_microsites/
         donation_embed.html
         alert_banner.html
         faq.html
+      widgets/
+        microsite_builder.html — Wagtail widget wrapper for the visual editor
   static/
     wagtail_microsites/
       js/
@@ -137,6 +139,17 @@ The `builder_json` field stores a structure like:
   ]
 }
 ```
+
+### Admin editor flow (GrapesJS)
+
+- Wagtail renders `builder_json` with a custom `MicrositeBuilderWidget`.
+- GrapesJS exposes only `BLOCK_DEFS` entries (approved block types).
+- On load, the widget deserialises `builder_json.blocks` into constrained visual
+  components.
+- On edit/reorder/save, the widget serialises the canvas back to
+  `{version, blocks}` JSON.
+- The model then validates that payload with `validate_builder_payload()` before
+  any save is accepted.
 
 ---
 
@@ -276,8 +289,8 @@ Accessible accordion-style FAQ.
 
 3. **Add GrapesJS component** in
    `wagtail_microsites/static/wagtail_microsites/js/microsite-builder.js` —
-   add an entry to `BLOCK_DEFS` with `label`, `category`, `defaultProps`, and
-   `traits`.
+   add an entry to `BLOCK_DEFS` with `label`, `defaults`, and `fields`.
+   Keep it constrained to approved props only.
 
 4. **Write tests** — add cases to `wagtail_microsites/tests/test_schema.py`
    covering required/optional/unknown props and any validators.
@@ -340,20 +353,21 @@ python manage.py test wagtail_microsites
 - Hero overlay text with designable heading level, font weight, font size, font
   family, colour, horizontal alignment, and vertical position
 - Two-column block with adjustable ratio (50/50, 40/60, 67/33, etc.)
-- GrapesJS admin integration scaffold (constrained block UI, schema
-  serialisation, canvas preview)
+- GrapesJS admin integration wired to `builder_json` (constrained block UI,
+  schema serialisation, canvas preview, block reordering)
 - Public CSS for all components with responsive stacking for column blocks
 - Admin CSS for the builder panel
-- 85 passing tests covering schema validation, rendering, and security
+- Automated tests covering schema validation, rendering, security, and admin
+  builder wiring
 - URL and HTML sanitisation layer
 - README with full documentation
 
 ### 🔜 Recommended follow-up work
 
-- **GrapesJS polish** — inline trait editing, live preview in canvas, device
-  preview toggle, drag-and-drop reorder
-- **Nested block editing** — UI for editing sub-blocks inside two-column /
-  three-column containers
+- **GrapesJS polish** — device preview toggle, richer canvas previews, and
+  improved field-level validation messages before save
+- **Nested block editing UX** — replace JSON-array inputs for
+  two-column/three-column sub-blocks with dedicated drag-and-drop sub-canvases
 - **Page templates / presets** — allow editors to clone from a set of
   pre-built microsite layouts
 - **Wagtail image picker** — replace raw URL inputs with the Wagtail image
