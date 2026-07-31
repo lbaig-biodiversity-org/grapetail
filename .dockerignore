@@ -3,6 +3,9 @@
 /static/
 *.sqlite3
 
+# Local developer settings override — must never be baked into the image.
+grapetail/settings/local.py
+
 # Python and others
 __pycache__
 *.pyc

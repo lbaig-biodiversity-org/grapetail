@@ -46,7 +46,10 @@ COPY --chown=wagtail:wagtail . .
 USER wagtail
 
 # Collect static files.
-RUN python manage.py collectstatic --noinput --clear
+# Use build-safe settings (SQLite, dummy secret key) so this step never
+# requires a MySQL server or the mysqlclient driver to be initialised.
+RUN DJANGO_SETTINGS_MODULE=grapetail.settings.build \
+    python manage.py collectstatic --noinput --clear
 
 # Runtime command that executes when "docker run" is called, it does the
 # following:
