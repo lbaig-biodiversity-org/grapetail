@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailuserbar %}
+
+{% block title %}
+  {% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}
+{% endblock %}
+
+{% block body_class %}microsite microsite--theme-{{ page.theme }}{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'wagtail_microsites/css/microsite-public.css' %}">
+{% endblock %}
+
+{% block content %}
+  {% wagtailuserbar %}
+
+  {% if is_expired %}
+    <div class="ms-expired-notice" role="alert">
+      <p>This microsite has expired and is no longer active.</p>
+    </div>
+  {% endif %}
+
+  <article class="microsite__body">
+    {{ rendered_builder|safe }}
+  </article>
+{% endblock %}

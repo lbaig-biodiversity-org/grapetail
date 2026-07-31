@@ -1,0 +1,61 @@
+{% load wagtail_microsites_tags %}
+{# -----------------------------------------------------------------------
+   Donation / Signup Embed block.
+
+   Props:
+     embed_type    (required) "donation" | "signup" | "email"
+     embed_url     (optional) external embed URL → rendered in an iframe
+     form_id       (optional) inline form identifier
+     title         (optional) visible heading
+     description   (optional) supporting text
+   ----------------------------------------------------------------------- #}
+
+<section class="ms-donation-embed ms-donation-embed--{{ props.embed_type|escape }}">
+  <div class="ms-container">
+    {% if props.title %}
+      <h2 class="ms-donation-embed__title">{{ props.title|escape }}</h2>
+    {% endif %}
+    {% if props.description %}
+      <p class="ms-donation-embed__description">{{ props.description|escape }}</p>
+    {% endif %}
+
+    {% if props.embed_url %}
+      {% with safe_url=props.embed_url|safe_url %}
+        {% if safe_url %}
+          <div class="ms-donation-embed__frame-wrap">
+            {# noopener + no allow-scripts keeps the iframe sandboxed.
+               Adjust sandbox flags as needed for the specific embed provider. #}
+            <iframe
+              src="{{ safe_url }}"
+              class="ms-donation-embed__iframe"
+              title="{{ props.title|default:"Embed"|escape }}"
+              loading="lazy"
+              sandbox="allow-forms allow-same-origin allow-popups"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
+        {% else %}
+          <p class="ms-donation-embed__error">
+            Invalid embed URL — please check the block configuration.
+          </p>
+        {% endif %}
+      {% endwith %}
+    {% elif props.form_id %}
+      {# Placeholder for inline-rendered forms (e.g. Action Network, Engaging Networks).
+         Extend this with your organisation's specific form rendering logic. #}
+      <div
+        class="ms-donation-embed__inline"
+        data-form-id="{{ props.form_id|escape }}"
+        data-embed-type="{{ props.embed_type|escape }}"
+      >
+        <p class="ms-donation-embed__placeholder">
+          [{{ props.embed_type|capfirst }} form: <code>{{ props.form_id|escape }}</code>]
+        </p>
+      </div>
+    {% else %}
+      <p class="ms-donation-embed__placeholder">
+        [{{ props.embed_type|capfirst }} embed — configure an embed URL or form ID]
+      </p>
+    {% endif %}
+  </div>
+</section>

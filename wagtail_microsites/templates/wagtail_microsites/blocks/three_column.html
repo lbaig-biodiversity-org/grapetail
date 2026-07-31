@@ -1,0 +1,36 @@
+{% load wagtail_microsites_tags %}
+{# -----------------------------------------------------------------------
+   Three-column layout block.
+
+   Props:
+     gap             (optional) CSS gap value  default: 2rem
+     stack_on_mobile (optional) boolean        default: true
+     col1_blocks     (list of sub-blocks)
+     col2_blocks     (list of sub-blocks)
+     col3_blocks     (list of sub-blocks)
+   ----------------------------------------------------------------------- #}
+
+{% with gap=props.gap|default:"2rem" %}
+<section class="ms-three-column{% if props.stack_on_mobile != False %} ms-three-column--stackable{% endif %}">
+  <div
+    class="ms-three-column__grid"
+    style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: {{ gap|escape }};"
+  >
+    <div class="ms-three-column__col">
+      {% for sub_block in props.col1_blocks %}
+        {% render_block sub_block %}
+      {% endfor %}
+    </div>
+    <div class="ms-three-column__col">
+      {% for sub_block in props.col2_blocks %}
+        {% render_block sub_block %}
+      {% endfor %}
+    </div>
+    <div class="ms-three-column__col">
+      {% for sub_block in props.col3_blocks %}
+        {% render_block sub_block %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endwith %}

@@ -1,0 +1,68 @@
+{% load wagtail_microsites_tags %}
+{# -----------------------------------------------------------------------
+   Hero block — full-width banner with designable, positionable overlay text.
+
+   Props:
+     headline                 (required)
+     subheadline              (optional)
+     background_image_url     (optional)
+     cta_text / cta_url       (optional)
+     overlay_heading_level    h1–h4 (default: h1)
+     overlay_font_weight      normal / semibold / bold / extrabold
+     overlay_font_size        CSS value e.g. "2.5rem"
+     overlay_font_family      CSS font-family string
+     overlay_text_color       CSS colour e.g. "#ffffff"
+     overlay_horizontal_align left / center / right
+     overlay_vertical_align   top / center / bottom
+   ----------------------------------------------------------------------- #}
+
+{% with h_align=props.overlay_horizontal_align|default:"center" %}
+{% with v_align=props.overlay_vertical_align|default:"center" %}
+{% with font_size=props.overlay_font_size|default:"2.5rem" %}
+{% with font_weight=props.overlay_font_weight|default:"bold" %}
+{% with font_family=props.overlay_font_family|default:"" %}
+{% with text_color=props.overlay_text_color|default:"#ffffff" %}
+{% with bg_url=props.background_image_url|safe_url %}
+<section
+  class="ms-hero ms-hero--h-{{ h_align }} ms-hero--v-{{ v_align }}"
+  {% if bg_url %}style="background-image: url('{{ bg_url }}');"{% endif %}
+  aria-label="{{ props.headline|escape }}"
+>
+  <div class="ms-hero__overlay">
+    <div
+      class="ms-hero__content ms-hero__content--weight-{{ font_weight }}"
+      style="{% if font_size %}font-size: {{ font_size }};{% endif %} {% if font_family %}font-family: {{ font_family }};{% endif %} color: {{ text_color }};"
+    >
+      {% with heading_level=props.overlay_heading_level|default:"h1" %}
+        {% if heading_level == "h2" %}
+          <h2 class="ms-hero__headline">{{ props.headline|escape }}</h2>
+        {% elif heading_level == "h3" %}
+          <h3 class="ms-hero__headline">{{ props.headline|escape }}</h3>
+        {% elif heading_level == "h4" %}
+          <h4 class="ms-hero__headline">{{ props.headline|escape }}</h4>
+        {% else %}
+          <h1 class="ms-hero__headline">{{ props.headline|escape }}</h1>
+        {% endif %}
+      {% endwith %}
+      {% if props.subheadline %}
+        <p class="ms-hero__subheadline">{{ props.subheadline|escape }}</p>
+      {% endif %}
+      {% if props.cta_text and props.cta_url %}
+        {% with safe_cta=props.cta_url|safe_url %}
+          {% if safe_cta %}
+            <p class="ms-hero__cta">
+              <a class="ms-button" href="{{ safe_cta }}">{{ props.cta_text|escape }}</a>
+            </p>
+          {% endif %}
+        {% endwith %}
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endwith %}
+{% endwith %}
+{% endwith %}
+{% endwith %}
+{% endwith %}
+{% endwith %}
+{% endwith %}
