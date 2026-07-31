@@ -1,0 +1,101 @@
+.microsite-builder-widget {
+  margin-top: 0.5rem;
+}
+
+.microsite-builder-widget__layout {
+  display: grid;
+  grid-template-columns: minmax(200px, 1fr) minmax(420px, 2fr) minmax(260px, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.microsite-builder-widget__palette,
+.microsite-builder-widget__layers,
+.microsite-builder-widget__inspector {
+  border: 1px solid #d9dce1;
+  border-radius: 4px;
+  background: #fff;
+  padding: 0.75rem;
+}
+
+.microsite-builder-widget__palette {
+  min-height: 320px;
+}
+
+.microsite-builder-widget__canvas-wrap {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.microsite-builder-widget__canvas {
+  border: 1px solid #d9dce1;
+  border-radius: 4px;
+  overflow: hidden;
+  min-height: 520px;
+}
+
+.microsite-builder-widget__layers {
+  min-height: 120px;
+}
+
+.microsite-builder-widget__inspector {
+  min-height: 320px;
+}
+
+.microsite-builder-widget__inspector .help {
+  margin: 0;
+  color: #54606e;
+}
+
+.microsite-builder-inspector-form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.microsite-builder-inspector-form h4 {
+  margin: 0;
+}
+
+.microsite-builder-inspector-field {
+  display: grid;
+  gap: 0.25rem;
+  font-weight: 600;
+}
+
+.microsite-builder-inspector-field input,
+.microsite-builder-inspector-field select,
+.microsite-builder-inspector-field textarea {
+  font-weight: 400;
+}
+
+.microsite-builder-widget__advanced {
+  margin-top: 0.75rem;
+}
+
+.microsite-builder-widget__advanced textarea {
+  width: 100%;
+  display: none;
+  min-height: 220px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.microsite-builder-widget__advanced[open] textarea {
+  display: block;
+}
+
+.ms-builder-block {
+  border: 1px solid #d9dce1;
+  border-radius: 4px;
+  background: #f8f9fb;
+  padding: 0.75rem;
+}
+
+.ms-builder-block strong {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.ms-builder-block p {
+  margin: 0;
+  color: #3d4754;
+}

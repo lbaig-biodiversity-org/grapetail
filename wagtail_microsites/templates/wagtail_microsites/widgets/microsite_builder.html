@@ -1,0 +1,17 @@
+<div class="microsite-builder-widget" data-builder-widget data-source-id="{{ widget.attrs.id }}">
+  <div class="microsite-builder-widget__layout">
+    <div class="microsite-builder-widget__palette" data-builder-palette></div>
+    <div class="microsite-builder-widget__canvas-wrap">
+      <div class="microsite-builder-widget__canvas" data-builder-canvas></div>
+      <div class="microsite-builder-widget__layers" data-builder-layers></div>
+    </div>
+    <div class="microsite-builder-widget__inspector" data-builder-inspector>
+      <p class="help">Select a block to edit its approved settings.</p>
+    </div>
+  </div>
+
+  <details class="microsite-builder-widget__advanced">
+    <summary>Advanced: raw JSON</summary>
+    <textarea name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %}>{{ widget.value|default_if_none:"" }}</textarea>
+  </details>
+</div>

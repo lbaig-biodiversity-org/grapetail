@@ -30,6 +30,8 @@ local.py
 db.sqlite3
 media/
 static/
+!wagtail_microsites/static/
+!wagtail_microsites/static/**
 
 # Coverage
 .coverage
@@ -48,4 +50,3 @@ htmlcov/
 
 # Node (if frontend tooling is added later)
 node_modules/
-

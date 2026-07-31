@@ -13,6 +13,7 @@ from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.models import Page
 
 from .schema import MicrositeSchemaError, validate_builder_payload
+from .widgets import MicrositeBuilderWidget
 
 
 class MicrositePage(Page):
@@ -79,10 +80,12 @@ class MicrositePage(Page):
             ],
             heading="Microsite settings",
         ),
-        # The builder_json field is presented as-is here (raw JSON textarea)
-        # and replaced by the GrapesJS widget in production via the custom
-        # MicrositeBuilderPanel defined in panels.py.
-        FieldPanel("builder_json", classname="microsite-builder-panel"),
+        # Rendered through MicrositePageAdminForm + MicrositeBuilderWidget.
+        FieldPanel(
+            "builder_json",
+            widget=MicrositeBuilderWidget,
+            classname="microsite-builder-panel",
+        ),
     ]
 
     # -----------------------------------------------------------------------
