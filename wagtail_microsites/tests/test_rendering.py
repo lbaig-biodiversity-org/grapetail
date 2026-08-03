@@ -400,6 +400,58 @@ class RenderingSecurityTests(TestCase):
         self.assertNotIn("onclick", html)
         self.assertIn("Click", html)
 
+    def test_rich_text_safe_link_rendered(self):
+        """Regression: _URL_ATTRS was undefined, causing NameError on <a href>."""
+        page = _make_page(
+            builder_json={
+                "blocks": [
+                    {
+                        "type": "rich_text",
+                        "props": {
+                            "body": '<a href="https://example.com">Visit us</a>'
+                        },
+                    }
+                ]
+            }
+        )
+        html = page.render_builder()
+        self.assertIn("https://example.com", html)
+        self.assertIn("Visit us", html)
+
+    def test_rich_text_javascript_link_stripped(self):
+        """Unsafe href schemes must be stripped by the sanitiser."""
+        page = _make_page(
+            builder_json={
+                "blocks": [
+                    {
+                        "type": "rich_text",
+                        "props": {
+                            "body": '<a href="javascript:evil()">Click</a>'
+                        },
+                    }
+                ]
+            }
+        )
+        html = page.render_builder()
+        self.assertNotIn("javascript:", html)
+
+    def test_rich_text_safe_image_rendered(self):
+        """Regression: _URL_ATTRS was undefined, causing NameError on <img src>."""
+        page = _make_page(
+            builder_json={
+                "blocks": [
+                    {
+                        "type": "rich_text",
+                        "props": {
+                            "body": '<img src="https://example.com/photo.jpg" alt="photo">'
+                        },
+                    }
+                ]
+            }
+        )
+        html = page.render_builder()
+        self.assertIn("https://example.com/photo.jpg", html)
+
     def test_card_image_unsafe_url_not_rendered(self):
         page = _make_page(
             builder_json={

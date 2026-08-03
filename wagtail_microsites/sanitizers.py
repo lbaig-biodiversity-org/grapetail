@@ -62,6 +62,9 @@ _SAFE_ATTRS: dict[str, set[str]] = {
     "*": {"class", "id"},
 }
 
+# Attributes whose values are URLs and must pass sanitize_url()
+_URL_ATTRS: set[str] = {"href", "src", "action", "formaction"}
+
 
 def _clean_url_attr(tag: str, name: str, value: str) -> str | bool:
     # Immediately block any event handler attribute (onclick, onload, etc.)
